@@ -85,7 +85,7 @@ public class CinemaConfig {
             var programme1 = new Programme(LocalDateTime.now(), film1, cinemaHall1);
             var programme2 = new Programme(LocalDateTime.now(), film2, cinemaHall2);
             var programme4 = new Programme(LocalDateTime.now(), film1, cinemaHall2);
-            var programme3 = new Programme(LocalDateTime.now(), film1, cinemaHall2);
+            var programme3 = new Programme(LocalDateTime.of(2001, 12, 3, 12, 30), film1, cinemaHall2);
 
             var prog5 = new Programme(LocalDateTime.now(), film3, cinemaHall2);
             var prog6 = new Programme(LocalDateTime.now(), film4, cinemaHall2);
