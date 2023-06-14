@@ -55,13 +55,10 @@ public class CinemaConfig {
             cinema1.getHalls().add(cinemaHall2);
             cinema2.getHalls().add(cinemaHall1);
 
-<<<<<<< HEAD:src/main/java/com/rest/cinemaapi/configs/CinemaConfig.java
 //            var usher1 = new Usher("Janek", "Kowalski", cinema1);
 //            var usher2 = new Usher("Olek", "Bolek", cinema1);
 //
 //            cinema1.getUshers().addAll(List.of(usher1, usher2));
-=======
->>>>>>> 14fb745cb0c81570a80b7be41a18f35983b2dc26:src/main/java/com/rest/cinemaapi/CinemaConfig.java
             var cinemaHall3 = new CinemaHall("Sala Główna", HallType.STANDARD, cinema1);
             cinema1.getHalls().add(cinemaHall3);
 
