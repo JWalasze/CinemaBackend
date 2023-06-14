@@ -59,6 +59,37 @@ public class CinemaConfig {
 //            var usher2 = new Usher("Olek", "Bolek", cinema1);
 //
 //            cinema1.getUshers().addAll(List.of(usher1, usher2));
+            var cinemaHall3 = new CinemaHall("Sala Główna", HallType.STANDARD, cinema1);
+            cinema1.getHalls().add(cinemaHall3);
+
+            //Section B disabled row
+            var dis1 = new ForDisabledSeat(0, 0, 1, 1, cinemaHall3, SeatSection.B);
+            var dis2 = new ForDisabledSeat(1, 0, 2, 1, cinemaHall3, SeatSection.B);
+            var dis3 = new ForDisabledSeat(2, 0, 3, 1, cinemaHall3, SeatSection.B);
+            //section B regular row
+            var s1 = new Seat(0, 1, 1, 2, cinemaHall3, SeatSection.B);
+            var s2 = new Seat(1, 1, 2, 2, cinemaHall3, SeatSection.B);
+            var s3 = new Seat(2, 1, 3, 2, cinemaHall3, SeatSection.B);
+
+            cinemaHall3.getSeats().addAll(List.of(dis1, dis2, dis3));
+            cinemaHall3.getSeats().addAll(List.of(s1, s2, s3));
+
+            //Section A regular
+            for (int row = 0; row < 4; row++) {
+                for (int col = 4; col <= 8; col++) {
+                    cinemaHall3.getSeats().add(new Seat(col, row, col-3, row+1, cinemaHall3, SeatSection.A));
+                }
+            }
+
+            //Section C 2 * double + 1 * regular
+            var d1 = new DoubleSeat(4, 5, 1, 5, cinemaHall3, 5, 5, 2, 5, SeatSection.C);
+            var d12 = new DoubleSeat(5, 5, 2, 5, cinemaHall3, 4, 5, 1, 5, SeatSection.C);
+            var d2 = new DoubleSeat(6, 5, 3, 5, cinemaHall3, 7, 5, 4, 5, SeatSection.C);
+            var d22 = new DoubleSeat(7, 5, 4, 5, cinemaHall3, 6, 5, 3, 5, SeatSection.C);
+            var s = new Seat(8, 5, 5, 5, cinemaHall3, SeatSection.C);
+
+            cinemaHall3.getSeats().addAll(List.of(d1, d12, d2, d22, s));
+
 
             cinemaRepository.save(cinema1);
             cinemaRepository.save(cinema2);
@@ -82,11 +113,13 @@ public class CinemaConfig {
             var x = cinemaRepository.findAllByAddress_CityIs("Wrocław");
             x.forEach(System.out::println);
 
-            var film1 = new Film("Szybcy i Wściekli", "x", "x", "x", BigDecimal.valueOf(43.682), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, "url", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.SCREEN_X);
-            var film2 = new Film("Jagodno", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.DRAMA, "url", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.SCREEN_X);
-            var film3 = new Film("Harry Potter", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.COMEDY, "url", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.DOLBY_ATMOS);
-            var film4 = new Film("Indiana Jones", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, "url", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.HALL_4DX);
-            var film5 = new Film("Top", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ANIMATED, "url", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.STANDARD);
+            String mockImgUrl = "https://via.placeholder.com/150x200";
+
+            var film1 = new Film("Szybcy i Wściekli", "x", "x", "x", BigDecimal.valueOf(43.682), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.SCREEN_X);
+            var film2 = new Film("Jagodno", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.DRAMA, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.SCREEN_X);
+            var film3 = new Film("Harry Potter", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.COMEDY, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.DOLBY_ATMOS);
+            var film4 = new Film("Indiana Jones", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.HALL_4DX);
+            var film5 = new Film("Top", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ANIMATED, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.STANDARD);
 
             filmRepository.saveAll(List.of(film1, film2, film3, film4, film5)); //DAC TEST ŻE DZIAla SORTING
 
@@ -99,7 +132,9 @@ public class CinemaConfig {
             var prog6 = new Programme(LocalDateTime.now(), film4, cinemaHall2);
             var prog7 = new Programme(LocalDateTime.now(), film5, cinemaHall2);
 
-            programmeRepository.saveAll(List.of(programme1, programme2, programme3, programme4, prog5, prog6, prog7));
+            var prog8 = new Programme(LocalDateTime.now(), film5, cinemaHall3);
+
+            programmeRepository.saveAll(List.of(programme1, programme2, programme3, programme4, prog5, prog6, prog7, prog8));
 
             var contact = new ContactData("Kuba", "W", "500", "500@");
 
@@ -135,7 +170,7 @@ public class CinemaConfig {
             e.getHallTypes().forEach(System.out::println);
             e.getFilmLanguageTypes().forEach(System.out::println);
 
-            var hall = cinemaHallRepository.findById(2L);
+            /*var hall = cinemaHallRepository.findById(2L);
             var t = hall.get().getSeats();
             t.forEach(xx -> System.out.println(xx.getId()));
             System.out.println(hall.get().getNumberOfSeats());
@@ -145,16 +180,16 @@ public class CinemaConfig {
             var newSeat2 = new Seat(1, 1, 1, 1, hall.get(), SeatSection.C);
             hall.get().getSeats().add(newSeat);
             hall.get().getSeats().add(newSeat1);
-            hall.get().getSeats().add(newSeat2);
+            hall.get().getSeats().add(newSeat2);*/
 
             //hall.get().setHallName("TURBAN");
 //            seatRepository.saveAndFlush(newSeat);
 //            seatRepository.saveAndFlush(newSeat1);
 //            seatRepository.saveAndFlush(newSeat2);
 //            Thread.sleep(10 * 1000);
-            var flushed = cinemaHallRepository.saveAndFlush(hall.get());
+            //var flushed = cinemaHallRepository.saveAndFlush(hall.get());
 
-            System.out.println(flushed.getNumberOfSeats());
+            //System.out.println(flushed.getNumberOfSeats());
 
 //            var halls = cinemaHallRepository.findAll();
 //            halls.forEach(c -> System.out.println(c.seats())); //Ma rzucac nullem i rzuca więc git
