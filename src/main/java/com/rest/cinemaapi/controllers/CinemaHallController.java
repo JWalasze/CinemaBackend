@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/public")
 public class CinemaHallController {
     private final CinemaHallService cinemaHallService;
 

@@ -1,18 +1,18 @@
 package com.rest.cinemaapi.services;
 
-import com.rest.cinemaapi.models.Reservation;
-import com.rest.cinemaapi.models.ReservationDTO;
-import com.rest.cinemaapi.models.ReservedSeat;
-import com.rest.cinemaapi.models.Ticket;
+import com.rest.cinemaapi.enumerators.ReservationStatus;
+import com.rest.cinemaapi.models.*;
 import com.rest.cinemaapi.repositories.ProgrammeRepository;
 import com.rest.cinemaapi.repositories.ReservationRepository;
 import com.rest.cinemaapi.repositories.ReservedSeatRepository;
 import com.rest.cinemaapi.repositories.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -66,5 +66,41 @@ public class ReservationService {
         this.reservationRepository.save(newReservation);
 
         return null;
+    }
+
+    public Optional<ReservationForUsherDTO> getReservation(Long forId) {
+        var optionalReservation = this.reservationRepository.findById(forId);
+
+        if (optionalReservation.isEmpty()) {
+            return Optional.empty();
+        }
+
+        var reservation = optionalReservation.get();
+        var reservationForUsher = new ReservationForUsherDTO(reservation);
+
+        return Optional.of(reservationForUsher);
+    }
+
+    public ResponseEntity<ReservationStatusDTO> validateReservation(Long forId) {
+        var optionalReservation = this.reservationRepository.findById(forId);
+        if (optionalReservation.isEmpty()) {
+            return ResponseEntity.ok(new ReservationStatusDTO(forId, ReservationStatus.NOT_EXISTS, "Ticket does not exist!"));
+        }
+
+        var reservation = optionalReservation.get();
+
+        if (reservation.getReservationStatus() == ReservationStatus.INVALID ||
+                reservation.getReservationStatus() == ReservationStatus.NOT_EXISTS) {
+            return ResponseEntity.ok(new ReservationStatusDTO(forId, ReservationStatus.INVALID, "Ticket is invalid!"));
+        }
+
+        if (reservation.getReservationStatus() == ReservationStatus.CHECKED) {
+            return ResponseEntity.ok(new ReservationStatusDTO(forId, ReservationStatus.CHECKED, "Ticket is already validated"));
+        }
+
+        reservation.setReservationStatus(ReservationStatus.CHECKED);
+        this.reservationRepository.save(reservation);
+
+        return ResponseEntity.ok(new ReservationStatusDTO(forId, ReservationStatus.CHECKED, "Ticket was successfully validated"));
     }
 }

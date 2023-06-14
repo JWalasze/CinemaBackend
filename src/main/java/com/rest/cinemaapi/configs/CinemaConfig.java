@@ -1,4 +1,4 @@
-package com.rest.cinemaapi;
+package com.rest.cinemaapi.configs;
 
 import com.rest.cinemaapi.enumerators.*;
 import com.rest.cinemaapi.models.*;
@@ -8,6 +8,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,7 +30,9 @@ public class CinemaConfig {
             ProgrammeRepository programmeRepository,
             FilmRepository filmRepository,
             ReservationRepository reservationRepository,
-            ReservedSeatRepository reservedSeatRepository
+            ReservedSeatRepository reservedSeatRepository,
+            UsherRepository usherRepository,
+            PasswordEncoder passwordEncoder
     ) {
         return args -> {
             var address = new Address("Wrocław", "58-303", "Robotnicza", "96");
@@ -51,6 +54,11 @@ public class CinemaConfig {
 
             cinema1.getHalls().add(cinemaHall2);
             cinema2.getHalls().add(cinemaHall1);
+
+//            var usher1 = new Usher("Janek", "Kowalski", cinema1);
+//            var usher2 = new Usher("Olek", "Bolek", cinema1);
+//
+//            cinema1.getUshers().addAll(List.of(usher1, usher2));
 
             cinemaRepository.save(cinema1);
             cinemaRepository.save(cinema2);
@@ -87,7 +95,7 @@ public class CinemaConfig {
             var programme4 = new Programme(LocalDateTime.now(), film1, cinemaHall2);
             var programme3 = new Programme(LocalDateTime.now(), film1, cinemaHall2);
 
-            var prog5 = new Programme(LocalDateTime.now(), film3, cinemaHall2);
+            var prog5 = new Programme(LocalDateTime.now(), film3, cinemaHall1);
             var prog6 = new Programme(LocalDateTime.now(), film4, cinemaHall2);
             var prog7 = new Programme(LocalDateTime.now(), film5, cinemaHall2);
 
@@ -95,24 +103,24 @@ public class CinemaConfig {
 
             var contact = new ContactData("Kuba", "W", "500", "500@");
 
-//            var reservation1 = new Reservation(contact, programme1);
-//            var reservation2 = new Reservation(contact, programme1);
-//
-//            var seatRes1 = new ReservedSeat(reservation1, seat1, programme1);
-//            var seatRes2 = new ReservedSeat(reservation1, seat4, programme1);
-//
-//            var seatRes3 = new ReservedSeat(reservation2, seat3, programme1);
-//            var seatRes4 = new ReservedSeat(reservation2, seat1, programme2);
-//
-//            reservation1.getReservedSeats().addAll(List.of(seatRes1, seatRes2));
-//            reservation2.getReservedSeats().addAll(List.of(seatRes3, seatRes4));
-//
-//            reservationRepository.save(reservation1);
-//            reservationRepository.save(reservation2);
-//
-//            var res = reservationRepository.findById(1L);
-//            res.get().getReservedSeats().forEach(System.out::println);
-//            reservationRepository.delete(reservation1);
+            var reservation1 = new Reservation(contact, programme1);
+            var reservation2 = new Reservation(contact, programme1);
+
+            var seatRes1 = new ReservedSeat(reservation1, seat1, programme1);
+            var seatRes2 = new ReservedSeat(reservation1, seat4, programme1);
+
+            var seatRes3 = new ReservedSeat(reservation2, seat3, programme1);
+            var seatRes4 = new ReservedSeat(reservation2, seat1, programme2);
+
+            reservation1.getReservedSeats().addAll(List.of(seatRes1, seatRes2));
+            reservation2.getReservedSeats().addAll(List.of(seatRes3, seatRes4));
+
+            reservationRepository.save(reservation1);
+            reservationRepository.save(reservation2);
+
+            var res = reservationRepository.findById(1L);
+            res.get().getReservedSeats().forEach(System.out::println);
+            reservationRepository.delete(reservation1);
 
             System.out.println("...");
             var d = cinemaRepository.findAll();
@@ -163,6 +171,11 @@ public class CinemaConfig {
 //            properties.put("javax.persistence.fetchgraph", entityGraph);
 //            var post = entityManager.find(Cinema.class, id, properties);
 
+            var usher = new Usher("Kuba", "Walaszek", cinema1);
+            usher.setEmail("walaszekjakub1234@mail.com");
+            usher.setPassword(passwordEncoder.encode("haslo1234"));
+            usher.setRole(Role.USHER);
+            usherRepository.save(usher);
         };
     }
 }

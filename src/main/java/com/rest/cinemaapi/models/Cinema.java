@@ -65,8 +65,17 @@ public class Cinema {
     )
     private List<CinemaHall> halls;
 
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "cinema",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY
+    )
+    private List<Usher> ushers;
+
     public Cinema() {
         this.halls = new ArrayList<>();
+        this.ushers = new ArrayList<>();
     }
 
     public Cinema(
@@ -76,5 +85,6 @@ public class Cinema {
         this.name = name;
         this.address = address;
         this.halls = new ArrayList<>();
+        this.ushers = new ArrayList<>();
     }
 }

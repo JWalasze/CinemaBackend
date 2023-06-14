@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/public")
 public class ProgrammeController {
     private final ProgrammeService programmeService;
 
@@ -31,6 +31,7 @@ public class ProgrammeController {
             @RequestParam(defaultValue = "") Filter filterBy,
             @RequestParam(defaultValue = "") String value
     ) {
+        System.out.println(filterBy);
         return this.programmeService.getProgramme(cinemaId, page, size, date, filterBy, value);
     }
 }
