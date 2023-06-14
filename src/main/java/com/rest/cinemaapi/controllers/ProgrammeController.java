@@ -28,7 +28,7 @@ public class ProgrammeController {
             @RequestParam LocalDate date,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "3") Integer size,
-            @RequestParam(defaultValue = "") Filter filterBy,
+            @RequestParam(defaultValue = "NONE") Filter filterBy,
             @RequestParam(defaultValue = "") String value
     ) {
         return this.programmeService.getProgramme(cinemaId, page, size, date, filterBy, value);
