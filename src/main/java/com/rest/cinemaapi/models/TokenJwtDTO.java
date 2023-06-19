@@ -5,10 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ticket {
-    private Long reservationId;
+public class TokenJwtDTO {
+    private String token;
+
+    private Date expirationDate;
 }

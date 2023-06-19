@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .permitAll()
                 .requestMatchers("/api/usher/auth/login")
                 .permitAll()
+                .requestMatchers("/api/usher/get_expiration_date")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

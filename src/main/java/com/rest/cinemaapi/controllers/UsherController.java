@@ -1,9 +1,6 @@
 package com.rest.cinemaapi.controllers;
 
-import com.rest.cinemaapi.models.LoginFormDTO;
-import com.rest.cinemaapi.models.ReservationForUsherDTO;
-import com.rest.cinemaapi.models.ReservationStatusDTO;
-import com.rest.cinemaapi.models.TokenJwt;
+import com.rest.cinemaapi.models.*;
 import com.rest.cinemaapi.services.ReservationService;
 import com.rest.cinemaapi.services.UsherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +27,19 @@ public class UsherController {
         return this.usherService.loginToCinema(loginFormDTO);
     }
 
+    @GetMapping("/get_expiration_date")
+    public ResponseEntity<TokenJwtDTO> getTokenExpirationDate(@RequestBody TokenJwt token) {
+        try {
+            return new ResponseEntity<>(this.usherService.getTokenExpirationDate(token), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
     @GetMapping("/check-ticket")
     public ResponseEntity<ReservationForUsherDTO> getReservation(@RequestParam Long forId) {
         var reservation = this.reservationService.getReservation(forId);
-        return reservation.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+        return reservation.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping("/validate-ticket")

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,12 +34,13 @@ public class ReservationService {
         this.reservedSeatRepository = reservedSeatRepository1;
     }
 
-    public List<Ticket> makeReservation(ReservationDTO reservation) {
+    public Optional<Ticket> makeReservation(ReservationDTO reservation) {
         var programme = this.programmeRepository.findById(reservation.getProgrammeId());
 
         if (programme.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
+        System.out.println("==1");
 
         var newReservation = new Reservation(reservation.getContactData(), programme.get());
 
@@ -49,23 +49,25 @@ public class ReservationService {
             var isSeatAlreadyReserved = this.reservedSeatRepository.findReservedSeatBySeatIdAndProgrammeId(reservedSeatId, programme.get().getId());
 
             if (isSeatAlreadyReserved.isPresent() || seat.isEmpty()) {
-                return null;
+                return Optional.empty();
             }
 
             System.out.println(seat.get().getCinemaHall().getId());
             System.out.println(programme.get().getHall().getId());
             System.out.println("___");
             if (!Objects.equals(seat.get().getCinemaHall().getId(), programme.get().getHall().getId())) {
-                return null;
+                return Optional.empty();
             }
 
             var reservedSeat = new ReservedSeat(newReservation, seat.get(), programme.get());
             newReservation.getReservedSeats().add(reservedSeat);
+            System.out.println("==2");
         }
 
         this.reservationRepository.save(newReservation);
+        System.out.println("==3");
 
-        return null;
+        return Optional.of(Ticket.builder().reservationId(newReservation.getId()).build());
     }
 
     public Optional<ReservationForUsherDTO> getReservation(Long forId) {

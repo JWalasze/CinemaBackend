@@ -1,5 +1,6 @@
 package com.rest.cinemaapi.configs.security;
 
+import com.rest.cinemaapi.models.TokenJwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,6 +55,12 @@ public class JwtService {
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public Date getExpirationDate(TokenJwt token) {
+        System.out.println(new Date(System.currentTimeMillis()));
+        System.out.println(new Date(System.currentTimeMillis() + 1000 * 60 * 24));
+        return this.extractExpiration(token.getToken());
     }
 
     private Claims extractAllClaims(String token) {
