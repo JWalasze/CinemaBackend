@@ -117,11 +117,15 @@ public class CinemaConfig {
 
             var film1 = new Film("Szybcy i Wściekli", "x", "x", "x", BigDecimal.valueOf(43.682), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.SCREEN_X);
             var film2 = new Film("Jagodno", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.DRAMA, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.SCREEN_X);
-            var film3 = new Film("Harry Potter", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.COMEDY, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.DOLBY_ATMOS);
-            var film4 = new Film("Indiana Jones", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.HALL_4DX);
+            var film3 = new Film("Harry Potter", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.COMEDY, "https://img.posterstore.com/zoom/wb0003-8harrypotter-half-bloodprince50x70.jpg", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.DOLBY_ATMOS);
+            var film4 = new Film("Indiana Jones", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ACTION, "https://pbs.twimg.com/media/FxbxEb9aEAAqpOS.jpg:small", FilmLanguageType.DUBBING, FilmScreenType.SCREEN_3D, FilmType.HALL_4DX);
             var film5 = new Film("Top", "y", "y", "y", BigDecimal.valueOf(23.45), LocalDate.now(), LocalTime.now(), AgeLimit.PG18, Genre.ANIMATED, mockImgUrl, FilmLanguageType.DUBBING, FilmScreenType.SCREEN_2D, FilmType.STANDARD);
 
             filmRepository.saveAll(List.of(film1, film2, film3, film4, film5)); //DAC TEST ŻE DZIAla SORTING
+            
+            var now = LocalDateTime.now();
+            var tomorrow = now.plusDays(1);
+            var nowPlus1h = now.plusHours(1);
 
             var programme1 = new Programme(LocalDateTime.now(), film1, cinemaHall1);
             var programme2 = new Programme(LocalDateTime.now(), film2, cinemaHall2);
@@ -132,9 +136,11 @@ public class CinemaConfig {
             var prog6 = new Programme(LocalDateTime.now(), film4, cinemaHall2);
             var prog7 = new Programme(LocalDateTime.now(), film5, cinemaHall2);
 
-            var prog8 = new Programme(LocalDateTime.now(), film5, cinemaHall3);
+            var prog8 = new Programme(nowPlus1h, film5, cinemaHall3);
 
-            programmeRepository.saveAll(List.of(programme1, programme2, programme3, programme4, prog5, prog6, prog7, prog8));
+            var prog9 = new Programme(tomorrow, film4, cinemaHall3);
+
+            programmeRepository.saveAll(List.of(programme1, programme2, programme3, programme4, prog5, prog6, prog7, prog8, prog9));
 
             var contact = new ContactData("Kuba", "W", "500", "500@");
 
