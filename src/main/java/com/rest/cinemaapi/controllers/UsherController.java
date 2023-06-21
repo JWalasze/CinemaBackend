@@ -28,7 +28,7 @@ public class UsherController {
     }
 
     @GetMapping("/get_expiration_date")
-    public ResponseEntity<TokenJwtDTO> getTokenExpirationDate(@RequestBody TokenJwt token) {
+    public ResponseEntity<TokenJwtDTO> getTokenExpirationDate(@RequestParam TokenJwt token) {
         try {
             return new ResponseEntity<>(this.usherService.getTokenExpirationDate(token), HttpStatus.OK);
         } catch (Exception e) {
