@@ -1,5 +1,6 @@
 package com.rest.cinemaapi.services;
 
+import com.rest.cinemaapi.models.Film;
 import com.rest.cinemaapi.models.FilmCharacteristics;
 import com.rest.cinemaapi.repositories.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;

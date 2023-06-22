@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/public")
@@ -32,5 +33,10 @@ public class ProgrammeController {
             @RequestParam(defaultValue = "") String value
     ) {
         return this.programmeService.getProgramme(cinemaId, page, size, date, filterBy, value);
+    }
+
+    @GetMapping("/programme/single")
+    public Programme getProgramme(@RequestParam Long id) {
+        return this.programmeService.getProgrammeById(id).orElse(null);
     }
 }
