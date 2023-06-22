@@ -31,7 +31,6 @@ public class ProgrammeController {
             @RequestParam(defaultValue = "NONE") Filter filterBy,
             @RequestParam(defaultValue = "") String value
     ) {
-        System.out.println(filterBy);
         return this.programmeService.getProgramme(cinemaId, page, size, date, filterBy, value);
     }
 }

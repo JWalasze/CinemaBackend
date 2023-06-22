@@ -40,7 +40,6 @@ public class ReservationService {
         if (programme.isEmpty()) {
             return Optional.empty();
         }
-        System.out.println("==1");
 
         var newReservation = new Reservation(reservation.getContactData(), programme.get());
 
@@ -52,20 +51,15 @@ public class ReservationService {
                 return Optional.empty();
             }
 
-            System.out.println(seat.get().getCinemaHall().getId());
-            System.out.println(programme.get().getHall().getId());
-            System.out.println("___");
             if (!Objects.equals(seat.get().getCinemaHall().getId(), programme.get().getHall().getId())) {
                 return Optional.empty();
             }
 
             var reservedSeat = new ReservedSeat(newReservation, seat.get(), programme.get());
             newReservation.getReservedSeats().add(reservedSeat);
-            System.out.println("==2");
         }
 
         this.reservationRepository.save(newReservation);
-        System.out.println("==3");
 
         return Optional.of(Ticket.builder().reservationId(newReservation.getId()).build());
     }

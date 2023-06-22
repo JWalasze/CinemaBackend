@@ -82,6 +82,7 @@ public class CinemaHall {
 
     @PostLoad
     private void postLoadMethod() {
+        System.out.println("TUTAJ");
         this.numberOfSeats = this.seats.size();
     }
 }

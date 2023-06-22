@@ -68,11 +68,7 @@ public class Seat {
     @PostPersist
     private void updateCinemaHall() {
         synchronized (lockSeat) {
-            System.out.println("Proszeeeee");
-            //System.out.println(this.cinemaHall.getNumberOfSeats());
-            System.out.println(this.getCinemaHall().getNumberOfSeats() + 1);
             this.cinemaHall.setNumberOfSeats(this.getCinemaHall().getNumberOfSeats() + 1);
-            System.out.println(this.getCinemaHall().getNumberOfSeats());
         }
     }
 }

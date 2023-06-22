@@ -25,7 +25,6 @@ public class ReservationController {
     public ResponseEntity<Ticket> makeReservation(@RequestBody ReservationDTO reservation) {
         try {
             var ticket = this.reservationService.makeReservation(reservation);
-            System.out.println(ticket.isPresent());
             return ticket.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
