@@ -1,2 +1,2 @@
 # CinemaAppBackend
-Nasz super projekt, będzie fajnie, życie jest piekne :)
+Backend for cinema services written in Java using REST architecture
